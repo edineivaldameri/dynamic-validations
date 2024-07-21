@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace EdineiValdameri\Laravel\DynamicValidation\Providers;
 
+use EdineiValdameri\Laravel\DynamicValidation\Models\Rule;
+use EdineiValdameri\Laravel\DynamicValidation\Observers\RuleObserver;
 use Illuminate\Support\ServiceProvider;
 
 class DynamicValidationServiceProvider extends ServiceProvider
@@ -17,6 +19,8 @@ class DynamicValidationServiceProvider extends ServiceProvider
                 __DIR__ . '/../../database/migrations',
             ]);
         }
+
+        Rule::observe(RuleObserver::class);
     }
 
     public function register(): void

@@ -8,6 +8,7 @@ use EdineiValdameri\Laravel\DynamicValidation\Http\Requests\DynamicFormRequest;
 use EdineiValdameri\Laravel\DynamicValidation\Models\Rule;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class RuleRepository
 {
@@ -48,9 +49,11 @@ class RuleRepository
     public function getRulesByAction(string $action): Collection
     {
         /** @var Collection<int, Rule> $rules */
-        $rules = Rule::query()
-            ->where('action', $action)
-            ->get();
+        $rules = Cache::rememberForever('dynamic-validations.actions.' . $action, function () use ($action) {
+            return Rule::query()
+                ->where('action', $action)
+                ->get();
+        });
 
         return $rules;
     }
@@ -62,15 +65,17 @@ class RuleRepository
      */
     public function getMessagesByAction(string $action): array
     {
-        /** @var array<string, string> $rules */
-        $rules = Rule::query()
-            ->select(['field', 'message'])
-            ->where('action', $action)
-            ->get()
-            ->pluck('message', 'field')
-            ->filter()
-            ->toArray();
+        /** @var array<string, string> $messages */
+        $messages = Cache::rememberForever('dynamic-validations.messages.' . $action, function () use ($action) {
+            return Rule::query()
+                ->select(['field', 'message'])
+                ->where('action', $action)
+                ->get()
+                ->pluck('message', 'field')
+                ->filter()
+                ->toArray();
+        });
 
-        return $rules;
+        return $messages;
     }
 }

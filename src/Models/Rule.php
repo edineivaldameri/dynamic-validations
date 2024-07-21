@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace EdineiValdameri\Laravel\DynamicValidation\Models;
 
 use EdineiValdameri\Laravel\DynamicValidation\Models\Builders\RuleBuilder;
+use EdineiValdameri\Laravel\DynamicValidation\Observers\RuleObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\HasBuilder;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +22,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property array<string, string> $casts
  * @property array<int, string> $fillable
  */
+#[ObservedBy([RuleObserver::class])]
 class Rule extends Model
 {
     /** @use HasBuilder<RuleBuilder> */

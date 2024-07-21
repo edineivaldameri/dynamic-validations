@@ -20,6 +20,7 @@ class TestCase extends Orchestra
     {
         parent::setUp();
 
+        /** @phpstan-ignore-next-line */
         Factory::guessFactoryNamesUsing(function (string $model) {
             $namespaces = [
                 'EdineiValdameri\\Laravel\\DynamicValidation\\Database\\Factories\\' . class_basename($model) . 'Factory',
@@ -35,6 +36,7 @@ class TestCase extends Orchestra
             return $model;
         });
 
+        /** @phpstan-ignore-next-line */
         Factory::guessModelNamesUsing(function (string $factory) {
             $namespaces = [
                 'EdineiValdameri\\Laravel\\DynamicValidation\\Models\\' . Str::replaceLast('Factory', '', class_basename($factory)),
