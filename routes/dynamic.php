@@ -12,4 +12,5 @@ Route::middleware('api')->group(function () {
         'update',
     ]);
     Route::get('dynamic/{action}', [DynamicController::class, 'show']);
+    Route::get('dynamic/{action}/schema', [DynamicController::class, 'schema']);
 });

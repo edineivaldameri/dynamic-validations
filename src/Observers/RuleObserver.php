@@ -18,5 +18,6 @@ class RuleObserver
     {
         Cache::forget('dynamic-validations.actions.' . $rule->action);
         Cache::forget('dynamic-validations.messages.' . $rule->action);
+        Cache::forget('dynamic-validations.schema.' . $rule->action);
     }
 }

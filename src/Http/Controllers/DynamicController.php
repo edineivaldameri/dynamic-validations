@@ -7,12 +7,14 @@ namespace EdineiValdameri\Laravel\DynamicValidation\Http\Controllers;
 use EdineiValdameri\Laravel\DynamicValidation\Http\Requests\DynamicFormRequest;
 use EdineiValdameri\Laravel\DynamicValidation\Http\Resources\RuleResource;
 use EdineiValdameri\Laravel\DynamicValidation\Repositories\RuleRepository;
+use EdineiValdameri\Laravel\DynamicValidation\Services\JsonSchemaService;
 use Illuminate\Http\JsonResponse;
 
 class DynamicController
 {
     public function __construct(
-        protected RuleRepository $repository
+        protected RuleRepository $repository,
+        protected JsonSchemaService $jsonSchemaGenerator
     ) {
     }
 
@@ -44,5 +46,12 @@ class DynamicController
         return response()->json(
             RuleResource::collection($rules)
         );
+    }
+
+    public function schema(string $action): JsonResponse
+    {
+        $schema = $this->jsonSchemaGenerator->generate($action);
+
+        return response()->json($schema);
     }
 }

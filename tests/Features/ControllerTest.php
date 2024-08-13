@@ -57,3 +57,25 @@ it('validates the return of the dynamic controller\'s show method', function () 
         'rule' => 'required',
     ]);
 });
+
+it('validates the return of the dynamic controller\'s schema method', function () {
+    Rule::query()->create([
+        'action' => 'test',
+        'field' => 'test',
+        'rule' => 'required',
+    ]);
+    Rule::query()->create([
+        'action' => 'test',
+        'field' => 'test',
+        'rule' => 'string',
+    ]);
+    $response = $this->get('dynamic/test/schema');
+    $response->assertOk();
+    $response->assertJsonFragment([
+        'type' => 'object',
+        'required' => ['test'],
+        'properties' => [
+            'test' => ['type' => 'string'],
+        ],
+    ]);
+});
