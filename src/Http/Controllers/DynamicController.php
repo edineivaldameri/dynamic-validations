@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace EdineiValdameri\Laravel\DynamicValidation\Http\Controllers;
 
 use EdineiValdameri\Laravel\DynamicValidation\Http\Requests\DynamicFormRequest;
+use EdineiValdameri\Laravel\DynamicValidation\Http\Resources\RuleResource;
 use EdineiValdameri\Laravel\DynamicValidation\Repositories\RuleRepository;
 use Illuminate\Http\JsonResponse;
 
@@ -34,5 +35,14 @@ class DynamicController
         $rule = $this->repository->update($request, $id);
 
         return response()->json($rule);
+    }
+
+    public function show(string $action): JsonResponse
+    {
+        $rules = $this->repository->getRulesByAction($action);
+
+        return response()->json(
+            RuleResource::collection($rules)
+        );
     }
 }

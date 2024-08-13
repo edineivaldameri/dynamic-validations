@@ -11,4 +11,5 @@ Route::middleware('api')->group(function () {
         'store',
         'update',
     ]);
+    Route::get('dynamic/{action}', [DynamicController::class, 'show']);
 });

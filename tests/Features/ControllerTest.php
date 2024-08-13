@@ -42,3 +42,18 @@ it('validates the return of the dynamic controller\'s update method', function (
         'rule' => 'nullable',
     ]);
 });
+
+it('validates the return of the dynamic controller\'s show method', function () {
+    Rule::query()->create([
+        'action' => 'test',
+        'field' => 'test',
+        'rule' => 'required',
+    ]);
+    $response = $this->get('dynamic/test');
+    $response->assertOk();
+    $response->assertJsonFragment([
+        'action' => 'test',
+        'field' => 'test',
+        'rule' => 'required',
+    ]);
+});
